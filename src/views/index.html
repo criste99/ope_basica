@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones Básicas</title>
+</head>
+<body>
+    <h1>Operaciones Básicas</h1>
+    <form action="/operacion" method="POST">
+        <label for="operacion">Operación:</label>
+        <select name="operacion" id="operacion">
+            <option value="suma">Suma</option>
+            <option value="resta">Resta</option>
+            <option value="multiplicacion">Multiplicación</option>
+            <option value="division">División</option>
+        </select>
+        <br>
+        <label for="operandos">Operandos (separados por comas):</label>
+        <input type="text" name="operandos" id="operandos">
+        <br>
+        <button type="submit">Calcular</button>
+    </form>
+    <div id="resultado"></div>
+    <script>
+        const form = document.querySelector('form');
+        const resultadoDiv = document.getElementById('resultado');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/operacion', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            resultadoDiv.textContent = `Resultado: ${data.resultado}`;
+        });
+    </script>
+</body>
+</html>
